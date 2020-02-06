@@ -1,0 +1,229 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Feb  2 13:56:48 2020
+
+@author: juliaarroyo
+"""
+import pandas as pd
+
+from scipy.stats import pearsonr
+gender = pd.read_csv('/Users/juliaarroyo/Downloads/Titanic/gender_submission.csv')
+train_df = pd.read_csv('/Users/juliaarroyo/Downloads/Titanic/train.csv')
+test_df = pd.read_csv('/Users/juliaarroyo/Downloads/Titanic/test.csv')
+
+data1 = train_df['Survived']
+data2 = train_df['Pclass']
+data3= [train_df,test_df]
+
+#Where pclass is 1:
+pclass1 = (train_df.loc[train_df['Pclass'].isin(['1'])])
+#print((pclass1.Survived).count)
+Survived1 = (pclass1.loc[pclass1['Survived'].isin(['1'])])
+#print(Survived1)
+#print((Survived1.Survived).count())
+SurvivedRatio = (136/216)
+print(SurvivedRatio)
+
+Females = (train_df.loc[train_df['Sex'].isin(['female'])])
+FemaleCount = ((Females.Sex).count())
+FemalesSurvived = (Females.loc[Females['Survived'].isin(['1'])])
+FemalesSurvivedCount = FemalesSurvived.Survived.count()
+print(FemalesSurvivedCount)
+print(FemaleCount)
+print(FemalesSurvivedCount/FemaleCount)
+#print(train_df.count())
+
+Males = (train_df.loc[train_df['Sex'].isin(['male'])])
+MaleCount = ((Males.Sex).count())
+MalesSurvived = (Males.loc[Males['Survived'].isin(['1'])])
+MalesSurvivedCount = MalesSurvived.Survived.count()
+print(MalesSurvivedCount)
+print(MaleCount)
+print(MalesSurvivedCount/MaleCount)
+
+NoSurvived = (train_df.loc[train_df['Survived'].isin(['0'])])
+NoSurvived1 = NoSurvived.dropna(subset=['Age'])
+
+import matplotlib.pyplot as plt
+a = NoSurvived1[['Age']].values.reshape(-1,1)
+num_bins = 5
+#plt.subplot(2,2,1)
+plt.hist(a, bins='auto')  # arguments are passed to np.histogram
+plt.title("Survived = 0")
+plt.xlabel('Age')
+#Text(0.5, 1.0, "Histogram with 'auto' bins")
+plt.show()
+
+
+YesSurvived = (train_df.loc[train_df['Survived'].isin(['1'])])
+YesSurvived1 = YesSurvived.dropna(subset=['Age'])
+b = YesSurvived1[['Age']].values.reshape(-1,1)
+#plt.subplot(2,2,3)
+plt.hist(b, bins='auto')  # arguments are passed to np.histogram
+plt.title("Survived = 1")
+plt.xlabel('Age')
+#Text(0.5, 1.0, "Histogram with 'auto' bins")
+plt.show()
+
+
+
+
+
+
+pclass1 = (train_df.loc[train_df['Pclass'].isin(['1'])])
+Survived1 = (pclass1.loc[pclass1['Survived'].isin(['1'])])
+NotSurvived1 = (pclass1.loc[pclass1['Survived'].isin(['0'])])
+pclass2 = (train_df.loc[train_df['Pclass'].isin(['2'])])
+Survived2 = (pclass2.loc[pclass2['Survived'].isin(['1'])])
+NotSurvived2 = (pclass2.loc[pclass2['Survived'].isin(['0'])])
+pclass3 = (train_df.loc[train_df['Pclass'].isin(['3'])])
+Survived3 = (pclass3.loc[pclass3['Survived'].isin(['1'])])
+NotSurvived3 = (pclass3.loc[pclass3['Survived'].isin(['0'])])
+
+#fig, axs = plt.subplots(3, 2, tight_layout=True, sharex='all', sharey='all', figsize=(5,6))
+#axs[0,0].hist(NotSurvived1[['Age']].values.reshape(-1,1), bins = 'auto')
+#axs[0,0].title.set_text('Pclass = 1|Survived = 0')
+#axs[0,1].hist(Survived1[['Age']].values.reshape(-1,1), bins = 'auto')
+#axs[0,1].title.set_text('Pclass = 1|Survived = 1')
+#axs[1,0].hist(NotSurvived2[['Age']].values.reshape(-1,1), bins = 'auto')
+#axs[1,0].title.set_text('Pclass = 2|Survived = 0')
+#axs[1,1].hist(Survived2[['Age']].values.reshape(-1,1), bins = 'auto')
+#axs[1,1].title.set_text('Pclass = 2|Survived = 1')
+#axs[2,0].hist(NotSurvived3[['Age']].values.reshape(-1,1), bins = 'auto')
+#axs[2,0].set_xlabel('Age')
+#axs[2,0].title.set_text('Pclass = 3|Survived = 0')
+#axs[2,1].hist(Survived3[['Age']].values.reshape(-1,1), bins = 'auto')
+#axs[2,1].title.set_text('Pclass = 3|Survived = 1')
+#axs[2,1].set_xlabel('Age')
+#plt.show
+
+EmbarkedS = (train_df.loc[train_df['Embarked'].isin(['S'])])
+SurvivedS = (EmbarkedS.loc[EmbarkedS['Survived'].isin(['1'])])
+NotSurvivedS = (EmbarkedS.loc[EmbarkedS['Survived'].isin(['0'])])
+EmbarkedC = (train_df.loc[train_df['Embarked'].isin(['C'])])
+SurvivedC = (EmbarkedC.loc[EmbarkedC['Survived'].isin(['1'])])
+NotSurvivedC = (EmbarkedC.loc[EmbarkedC['Survived'].isin(['0'])])
+EmbarkedQ = (train_df.loc[train_df['Embarked'].isin(['Q'])])
+SurvivedQ = (EmbarkedQ.loc[EmbarkedQ['Survived'].isin(['1'])])
+NotSurvivedQ = (EmbarkedQ.loc[EmbarkedQ['Survived'].isin(['0'])])
+
+fig, axs = plt.subplots(3, 2, tight_layout=True, sharex='all', sharey='all', figsize=(5,6))
+axs[0,0].hist(NotSurvivedS[['Sex']].values.reshape(-1,1), bins = 'auto')
+axs[0,0].title.set_text('Pclass = 1|Survived = 0')
+axs[0,1].hist(SurvivedS[['Sex']].values.reshape(-1,1), bins = 'auto')
+axs[0,1].title.set_text('Pclass = 1|Survived = 1')
+axs[1,0].hist(NotSurvivedC[['Sex']].values.reshape(-1,1), bins = 'auto')
+axs[1,0].title.set_text('Pclass = 2|Survived = 0')
+axs[1,1].hist(SurvivedC[['Sex']].values.reshape(-1,1), bins = 'auto')
+axs[1,1].title.set_text('Pclass = 2|Survived = 1')
+axs[2,0].hist(NotSurvivedQ[['Sex']].values.reshape(-1,1), bins = 'auto')
+axs[2,0].set_xlabel('Sex')
+axs[2,0].title.set_text('Pclass = 3|Survived = 0')
+axs[2,1].hist(SurvivedQ[['Sex']].values.reshape(-1,1), bins = 'auto')
+axs[2,1].title.set_text('Pclass = 3|Survived = 1')
+axs[2,1].set_xlabel('Sex')
+plt.show
+
+#females
+SFemalesS = (SurvivedS.loc[SurvivedS['Sex'].isin(['female'])]).Fare.mean()
+SFemalesD = (NotSurvivedS.loc[NotSurvivedS['Sex'].isin(['female'])]).Fare.mean()
+CFemalesS = (SurvivedC.loc[SurvivedC['Sex'].isin(['female'])]).Fare.mean()
+CFemalesD = (NotSurvivedC.loc[NotSurvivedC['Sex'].isin(['female'])]).Fare.mean()
+QFemalesS = (SurvivedQ.loc[SurvivedQ['Sex'].isin(['female'])]).Fare.mean()
+QFemalesD = (NotSurvivedQ.loc[NotSurvivedQ['Sex'].isin(['female'])]).Fare.mean()
+
+#Males
+SMalesS = (SurvivedS.loc[SurvivedS['Sex'].isin(['male'])]).Fare.mean()
+SMalesD = (NotSurvivedS.loc[NotSurvivedS['Sex'].isin(['male'])]).Fare.mean()
+CMalesS = (SurvivedC.loc[SurvivedC['Sex'].isin(['male'])]).Fare.mean()
+CMalesD = (NotSurvivedC.loc[NotSurvivedC['Sex'].isin(['male'])]).Fare.mean()
+QMalesS = (SurvivedQ.loc[SurvivedQ['Sex'].isin(['male'])]).Fare.mean()
+QMalesD = (NotSurvivedQ.loc[NotSurvivedQ['Sex'].isin(['male'])]).Fare.mean()
+
+
+names = ['Females' ,'Males']
+values1 = [SFemalesS, SMalesS]
+values2 = [SFemalesD, SMalesD]
+values3 = [CFemalesS, CMalesS]
+values4 = [CFemalesD, CMalesD]
+values5 = [QFemalesS, QMalesS]
+values6 = [QFemalesD, QMalesD]
+plt.figure(figsize=(5, 5))
+
+plt.subplot(321)
+plt.bar(names, values1)
+plt.subplot(322)
+plt.bar(names, values2)
+plt.subplot(323)
+plt.bar(names, values3)
+plt.subplot(324)
+plt.bar(names, values4)
+plt.subplot(325)
+plt.bar(names, values5)
+plt.subplot(326)
+plt.bar(names, values6)
+plt.suptitle('Categorical Plotting')
+plt.show()
+
+fig, axs = plt.subplots(3, 2, tight_layout=True, sharex='all', sharey='all', figsize=(5,6))
+axs[0,0].bar(names, values1)
+axs[0,0].title.set_text('Embarked = S|Survived = 0')
+axs[0,0].set_ylabel('Fare')
+axs[0,1].bar(names, values2)
+axs[0,1].title.set_text('Embarked = S|Survived = 1')
+axs[1,0].bar(names, values3)
+axs[1,0].title.set_text('Embarked = C|Survived = 0')
+axs[1,0].set_ylabel('Fare')
+axs[1,1].bar(names, values4)
+axs[1,1].title.set_text('Embarked = C|Survived = 1')
+axs[2,0].bar(names, values5)
+axs[2,0].set_xlabel('Sex')
+axs[2,0].set_ylabel('Fare')
+axs[2,0].title.set_text('Embarked = Q|Survived = 0')
+axs[2,1].bar(names, values6)
+axs[2,1].title.set_text('Embarked = Q|Survived = 1')
+axs[2,1].set_xlabel('Sex')
+plt.show
+
+Gender = train_df['Sex']
+train_df['Gender']=train_df.Sex.map({'female':1,'male':0})
+Gender=train_df['Gender']
+
+train_df.Age
+train_df.Age.isna().sum()
+GuessAges = pd.DataFrame(np.random.randint(np.std(train_df.Age),np.mean(train_df.Age),size=(891, 1)))
+s1 = GuessAges.loc[:,0]
+train_df.Age.fillna(s1)
+
+train_df.Embarked.isna().sum()
+s = ((pd.Series(train_df.Embarked.mode())).repeat(891)).reset_index(drop=True)
+train_df.Embarked.fillna(s)
+
+test_df.Fare.isna().sum()
+r = ((pd.Series(test_df.Fare.mode())).repeat(891)).reset_index(drop=True)
+test_df.Fare.fillna(r)
+
+
+for value in data3:
+    value.loc[ value['Fare'] <= 7.91, 'Fare'] = 0
+    value.loc[(value['Fare'] > 7.91) & (value['Fare'] <= 14.454), 'Fare'] = 1
+    value.loc[(value['Fare'] > 14.454) & (value['Fare'] <= 31), 'Fare']   = 2
+    value.loc[ value['Fare'] > 31, 'Fare'] = 3
+    
+    
+for value in data3:
+   if(value.isna()== 'True'):
+       print(value)
+    
+train_df = train_df.drop(['FareBand'], axis=1)
+combine = [train_df, test_df]
+    
+train_df.head(10)
+
+combinedCabinEmpty = (train_df.Cabin.isna().sum())+(test_df.Cabin.isna().sum())
+#YesSurvived = (train_df.loc[train_df['Survived'].isin(['1'])])
+#
+#plt.hist(YesSurvived[['Ticket']].values.reshape(-1,1), bins = 'auto')
+#plt.show
+#NotSurvived = (train_df.loc[train_df['Survived'].isin(['1'])])
